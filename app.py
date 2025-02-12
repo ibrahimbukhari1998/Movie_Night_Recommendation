@@ -63,12 +63,12 @@ def main():
 
         # Show Movie Poster (for fun)
         movie_posters = {
-            "Parasite": "https://link_to_poster_Parasite.jpg",
-            "Little Miss Sunshine": "https://link_to_poster_LittleMissSunshine.jpg",
-            # ... add links to other movie posters
+            "Parasite": "https://m.media-amazon.com/images/M/MV5BYjk1Y2U4MjQtY2ZiNS00OWQyLWI3MmYtZWUwNmRjYWRiNWNhXkEyXkFqcGc@._V1_.jpg",
+            # "Little Miss Sunshine": "https://link_to_poster_LittleMissSunshine.jpg",
+            # # ... add links to other movie posters
         }
         for movie in top_movies:
-            st.image(movie_posters.get(movie, "https://placeholder_image.jpg"), caption=movie, width=200)
+            st.image(movie_posters.get(movie, "https://i.ytimg.com/vi/2oB9emtxdrk/hqdefault.jpg"), caption=movie, width=200)
 
 if __name__ == "__main__":
     main()
