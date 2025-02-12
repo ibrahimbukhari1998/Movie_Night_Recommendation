@@ -46,22 +46,37 @@ def main():
 
     # Questionnaire
     responses = {}
-    responses["Genre1"] = st.selectbox("1. Pick a genre:", ["Thriller", "Comedy", "Adventure", "Sci-Fi", "Horror", "Drama", "Romance", "Anime"])
-    responses["Tone"] = st.selectbox("2. How do you like your movies?", ["Dark", "Feel-Good", "Light", "Thought-Provoking", "Disturbing", "Heartwarming", "Quirky", "Emotional"])
-    responses["Style"] = st.selectbox("3. Choose a movie style:", ["Suspenseful", "Wholesome", "Engaging", "Minimalist", "Intense", "Tragic", "Aesthetic", "Redemptive"])
-    responses["Language"] = st.selectbox("4. What language do you prefer?", ["English", "Korean", "Italian", "Japanese", "Hindi", "Indonesian"])
+    responses["Genres"] = st.multiselect("1. Select your favorite genres:", 
+                                         ["Thriller", "Comedy", "Adventure", "Sci-Fi", "Horror", "Drama", "Romance", "Anime"])
+
+    responses["Tone"] = st.selectbox("2. How do you like your movies?", 
+                                     ["Dark", "Feel-Good", "Light", "Thought-Provoking", "Disturbing", "Heartwarming", "Quirky", "Emotional"])
+    responses["Style"] = st.selectbox("3. Choose a movie style:", 
+                                      ["Suspenseful", "Wholesome", "Engaging", "Minimalist", "Intense", "Tragic", "Aesthetic", "Redemptive"])
+    responses["Language"] = st.selectbox("4. What language do you prefer?", 
+                                         ["English", "Korean", "Italian", "Japanese", "Hindi", "Indonesian"])
     responses["Era"] = st.selectbox("5. Which movie era do you like best?", ["Classic", "2000s", "Modern"])
 
-    responses["CharacterType"] = st.selectbox("6. What type of characters do you enjoy?", ["Strong", "Vulnerable", "Quirky", "Relatable", "Mysterious", "Funny"])
-    responses["PlotTwist"] = st.selectbox("7. How much do you enjoy plot twists?", ["None", "Small surprises", "Medium twists", "Big twists", "I love the unexpected!"])
-    responses["Length"] = st.selectbox("8. What length do you prefer?", ["Short (less than 90 mins)", "Medium (90-120 mins)", "Long (over 120 mins)"])
-    responses["Setting"] = st.selectbox("9. Which setting do you enjoy the most?", ["Urban", "Nature", "Space", "Historical", "Fantasy", "Small Town"])
-    responses["Mood"] = st.selectbox("10. What mood are you in today?", ["Adventurous", "Romantic", "Thoughtful", "Relaxed", "Energetic", "Curious"])
+    responses["CharacterType"] = st.selectbox("6. What type of characters do you enjoy?", 
+                                              ["Strong", "Vulnerable", "Quirky", "Relatable", "Mysterious", "Funny"])
+    responses["PlotTwist"] = st.selectbox("7. How much do you enjoy plot twists?", 
+                                          ["None", "Small surprises", "Medium twists", "Big twists", "I love the unexpected!"])
+    responses["Length"] = st.selectbox("8. What length do you prefer?", 
+                                       ["Short (less than 90 mins)", "Medium (90-120 mins)", "Long (over 120 mins)"])
+    responses["Setting"] = st.selectbox("9. Which setting do you enjoy the most?", 
+                                        ["Urban", "Nature", "Space", "Historical", "Fantasy", "Small Town"])
+    responses["Mood"] = st.selectbox("10. What mood are you in today?", 
+                                     ["Adventurous", "Romantic", "Thoughtful", "Relaxed", "Energetic", "Curious"])
 
     if st.button("Get Recommendations!"):
         # Encode user responses
         user_df = pd.DataFrame([responses])
-        user_encoded = pd.get_dummies(user_df)
+        
+        # Handle multiple genres
+        genres_encoded = pd.get_dummies(user_df["Genres"].apply(pd.Series).stack()).sum(level=0)
+        user_encoded = pd.get_dummies(user_df.drop(columns="Genres")).join(genres_encoded, how='left').fillna(0)
+
+        # Ensure all columns match
         user_encoded = user_encoded.reindex(columns=movies_df_encoded.columns, fill_value=0)
         
         # Predict top 3 movies
