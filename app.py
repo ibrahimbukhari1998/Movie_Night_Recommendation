@@ -28,21 +28,22 @@ def main():
 
     # Questionnaire
     user_answers = []
-    user_answers.append(st.selectbox("1. What’s your ideal movie night setup?", ["Emotional", "Suspenseful", "Light & Fun", "Thought-Provoking"]))
-    user_answers.append(st.selectbox("2. If your life were a movie, what genre would it be?", ["Comedy", "Thriller", "Drama", "Romance"]))
-    user_answers.append(st.selectbox("3. What’s your take on animated movies?", ["Love them!", "Only if they make me cry", "Prefer live-action"]))
-    user_answers.append(st.selectbox("4. If you could visit a fictional world, where would you go?", ["Aesthetic", "Thriller", "Romance", "Classic"]))
-    user_answers.append(st.selectbox("5. Which plot twist do you love the most?", ["Psychological Thriller", "Mystery", "Drama", "Romance"]))
-    user_answers.append(st.selectbox("6. Your dream vacation would be...", ["Classic", "Adventure", "Thriller", "Comedy"]))
-    user_answers.append(st.selectbox("7. How do you feel about subtitles?", ["Love foreign films", "Prefer English", "No preference"]))
-    user_answers.append(st.selectbox("8. Pick a classic movie quote that speaks to your soul:", ["Classic", "Action", "Romance", "Thriller"]))
-    user_answers.append(st.selectbox("9. What kind of endings do you prefer?", ["Feel-Good", "Tragic", "Open-ended", "Shocking"]))
-    user_answers.append(st.selectbox("10. What do you do after finishing a movie?", ["Analyze it", "Rewatch scenes", "Move on", "Recommend it"]))
-    user_answers.append(st.selectbox("11. Which describes your ideal protagonist?", ["Inspirational", "Thriller", "Comedy", "Romance"]))
-    user_answers.append(st.selectbox("12. Your thoughts on horror movies?", ["Love them!", "Only psychological", "No horror", "Horror-comedy"]))
-    user_answers.append(st.selectbox("13. What’s your ideal movie soundtrack?", ["Orchestral", "Rock", "Synth", "Romantic"]))
-    user_answers.append(st.selectbox("14. Which movie trope do you secretly love?", ["Enemies-to-lovers", "Unreliable narrator", "Misfits unite", "Tragic romance"]))
-    user_answers.append(st.selectbox("15. Choose a cinematic color palette:", ["Pastels", "Dark tones", "Bright colors", "Sepia"]))
+    user_answers.append(st.selectbox("1. What’s your ideal movie night setup?", ["Dim lights, mystery, and suspense!", "Laughter with popcorn in hand", "A thought-provoking experience", "A heartwarming story with tissues ready"], index=0))
+    user_answers.append(st.selectbox("2. If your life were a movie, what genre would it be?", ["A thrilling whodunit", "A goofy feel-good comedy", "A mind-bending drama", "A romantic tearjerker"], index=0))
+    user_answers.append(st.selectbox("3. What’s your take on animated movies?", ["Only if they shatter my emotions", "Love me some nostalgia!", "Eh, I prefer realism", "Give me anime or give me nothing"], index=0))
+    user_answers.append(st.selectbox("4. If you could visit a fictional world, where would you go?", ["A neon-lit cyberpunk city", "A quirky European town", "A psychological maze of twists", "A fairy-tale love story"], index=0))
+    user_answers.append(st.selectbox("5. Which plot twist do you love the most?", ["The killer was inside the house all along!", "The underdog rises to greatness", "The protagonist was the villain!", "They were soulmates in another life"], index=0))
+    user_answers.append(st.selectbox("6. Your dream vacation would be...", ["Exploring a haunted mansion", "Backpacking through vibrant cities", "Relaxing in a dreamy countryside", "A fast-paced action adventure"], index=0))
+    user_answers.append(st.selectbox("7. How do you feel about subtitles?", ["Foreign films are cinematic gold", "English all the way", "I’ll take dubs if I must", "I enjoy a mix of both"], index=0))
+    user_answers.append(st.selectbox("8. Pick a classic movie quote that speaks to your soul:", ["I see dead people", "Life is like a box of chocolates", "Here's looking at you, kid", "May the Force be with you"], index=0))
+    user_answers.append(st.selectbox("9. What kind of endings do you prefer?", ["Mind-blowing cliffhangers", "Happily ever after", "Bittersweet but meaningful", "A good old-fashioned twist"], index=0))
+    user_answers.append(st.selectbox("10. What do you do after finishing a movie?", ["Scour the internet for theories", "Immediately recommend it to friends", "Cry and relive it in my head", "Start watching the next one"], index=0))
+    user_answers.append(st.selectbox("11. Which describes your ideal protagonist?", ["A misunderstood genius", "A lovable misfit", "A determined underdog", "A hopeless romantic"], index=0))
+    user_answers.append(st.selectbox("12. Your thoughts on horror movies?", ["Give me nightmares!", "Only psychological ones", "No thanks!", "Only if they’re funny"], index=0))
+    user_answers.append(st.selectbox("13. What’s your ideal movie soundtrack?", ["Epic orchestral pieces", "80s synth vibes", "Melancholic piano tunes", "Catchy indie folk"], index=0))
+    user_answers.append(st.selectbox("14. Which movie trope do you secretly love?", ["The villain with a tragic backstory", "The unlikely group of heroes", "The slow-burn romance", "The shocking identity reveal"], index=0))
+    user_answers.append(st.selectbox("15. Choose a cinematic color palette:", ["Moody blues and grays", "Bright technicolor", "Pastel dreamscapes", "Golden vintage tones"], index=0))
+
 
     if st.button("Get Recommendations!"):
         # Convert user answers to a text format
