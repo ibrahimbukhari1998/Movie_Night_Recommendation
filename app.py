@@ -46,16 +46,16 @@ def main():
 
     # Questionnaire
     responses = {}
-    responses["Genre1"] = st.multiselect("1. Pick genres you like:", 
+    responses["Genres"] = st.multiselect("1. Select your favorite genres:", 
                                          ["Thriller", "Comedy", "Adventure", "Sci-Fi", "Horror", "Drama", "Romance", "Anime"])
+
     responses["Tone"] = st.selectbox("2. How do you like your movies?", 
                                      ["Dark", "Feel-Good", "Light", "Thought-Provoking", "Disturbing", "Heartwarming", "Quirky", "Emotional"])
     responses["Style"] = st.selectbox("3. Choose a movie style:", 
                                       ["Suspenseful", "Wholesome", "Engaging", "Minimalist", "Intense", "Tragic", "Aesthetic", "Redemptive"])
-    responses["Language"] = st.multiselect("4. What languages do you prefer?", 
-                                           ["English", "Korean", "Italian", "Japanese", "Hindi", "Indonesian"])
-    responses["Era"] = st.selectbox("5. Which movie era do you like best?", 
-                                    ["Classic", "2000s", "Modern"])
+    responses["Language"] = st.selectbox("4. What language do you prefer?", 
+                                         ["English", "Korean", "Italian", "Japanese", "Hindi", "Indonesian"])
+    responses["Era"] = st.selectbox("5. Which movie era do you like best?", ["Classic", "2000s", "Modern"])
 
     responses["CharacterType"] = st.selectbox("6. What type of characters do you enjoy?", 
                                               ["Strong", "Vulnerable", "Quirky", "Relatable", "Mysterious", "Funny"])
@@ -69,27 +69,24 @@ def main():
                                      ["Adventurous", "Romantic", "Thoughtful", "Relaxed", "Energetic", "Curious"])
 
     if st.button("Get Recommendations!"):
-            # Encode user responses
-            user_df = pd.DataFrame([responses])
-            
-            # Handling multiple selections for Genre1 and Language
-            for genre in responses["Genre1"]:
-                user_df[f"Genre1_{genre}"] = 1
-            for lang in responses["Language"]:
-                user_df[f"Language_{lang}"] = 1
-            
-            # Ensure all columns from training data are present
-            user_encoded = pd.get_dummies(user_df)
-            user_encoded = user_encoded.reindex(columns=movies_df_encoded.columns, fill_value=0)
-            
-            # Predict top 3 movies
-            predictions = clf.predict_proba(user_encoded)[0]
-            top_indices = np.argsort(predictions)[-5:][::-1]
-            top_movies = labels.iloc[top_indices]
-            
-            st.subheader("🎥 Your Recommended Movies:")
-            for movie in top_movies:
-                st.write(f"**{movie}**")
+        # Encode user responses
+        user_df = pd.DataFrame([responses])
+        
+        # Handle multiple genres
+        genres_encoded = pd.get_dummies(user_df["Genres"].apply(pd.Series).stack()).sum(level=0)
+        user_encoded = pd.get_dummies(user_df.drop(columns="Genres")).join(genres_encoded, how='left').fillna(0)
+
+        # Ensure all columns match
+        user_encoded = user_encoded.reindex(columns=movies_df_encoded.columns, fill_value=0)
+        
+        # Predict top 3 movies
+        predictions = clf.predict_proba(user_encoded)[0]
+        top_indices = np.argsort(predictions)[-5:][::-1]
+        top_movies = labels.iloc[top_indices]
+        
+        st.subheader("🎥 Your Recommended Movies:")
+        for movie in top_movies:
+            st.write(f"**{movie}**")
 
 if __name__ == "__main__":
     main()
