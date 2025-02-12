@@ -15,7 +15,18 @@ movies_metadata = {
     "The Grand Budapest Hotel": ["Comedy", "Drama", "Quirky", "Aesthetic", "English", "Modern"],
     "Gone Girl": ["Thriller", "Mystery", "Dark", "Twisted", "English", "Modern"],
     "A Silent Voice": ["Anime", "Drama", "Emotional", "Redemptive", "Japanese", "Modern"],
+    "The Rescue": ["Documentary", "Thriller", "Inspirational", "Real-Life", "English", "Modern"],
+    "Falling in Love Like in Movies": ["Romance", "Drama", "Heartfelt", "Whimsical", "Indonesian", "Modern"],
+    "Barfi": ["Comedy", "Drama", "Heartwarming", "Silent-Romantic", "Hindi", "Modern"],
+    "3 Idiots": ["Comedy", "Drama", "Inspirational", "Feel-Good", "Hindi", "Modern"],
+    "Haider": ["Drama", "Thriller", "Dark", "Political", "Hindi", "Modern"],
+    "Andhadhun": ["Thriller", "Mystery", "Dark", "Twisted", "Hindi", "Modern"],
+    "Laapata Ladies": ["Comedy", "Drama", "Light", "Social Commentary", "Hindi", "Modern"],
+    "Dangal": ["Sports", "Drama", "Inspirational", "Family", "Hindi", "Modern"],
+    "Kal Ho Naa Ho": ["Romance", "Drama", "Emotional", "Feel-Good", "Hindi", "2000s"],
+    "Kuch Kuch Hota Hai": ["Romance", "Drama", "Classic", "Wholesome", "Hindi", "Classic"]
 }
+
 
 # Convert movie attributes to TF-IDF vectors
 vectorizer = TfidfVectorizer()
