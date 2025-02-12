@@ -63,7 +63,7 @@ def main():
 
         # Compute cosine similarity
         similarities = cosine_similarity(user_vector, movie_vectors)[0]
-        top_movies = sorted(zip(movies_metadata.keys(), similarities), key=lambda x: x[1], reverse=True)[:7]
+        top_movies = sorted(zip(movies_metadata.keys(), similarities), key=lambda x: x[1], reverse=True)[:10]
 
         st.subheader("🎥 Your Recommended Movies:")
         for movie, score in top_movies:
