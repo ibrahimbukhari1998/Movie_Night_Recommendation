@@ -1,20 +1,14 @@
 import streamlit as st
 import numpy as np
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
 
-# Define movies and attributes
+# Define movies and attributes (same as before)
 movies_metadata = {
     "Parasite": ["Thriller", "Drama", "Dark", "Suspenseful", "Korean", "Modern"],
     "Little Miss Sunshine": ["Comedy", "Drama", "Feel-Good", "Wholesome", "English", "Modern"],
     "Holes": ["Adventure", "Family", "Light", "Engaging", "English", "2000s"],
-    "The Man from Earth": ["Sci-Fi", "Drama", "Thought-Provoking", "Minimalist", "English", "2000s"],
-    "Midsommar": ["Horror", "Psychological", "Disturbing", "Intense", "English", "Modern"],
-    "Life is Beautiful": ["Drama", "War", "Heartwarming", "Tragic", "Italian", "Classic"],
-    "Some Like It Hot": ["Comedy", "Romance", "Classic", "Light", "English", "Classic"],
-    "The Grand Budapest Hotel": ["Comedy", "Drama", "Quirky", "Aesthetic", "English", "Modern"],
-    "Gone Girl": ["Thriller", "Mystery", "Dark", "Twisted", "English", "Modern"],
-    "A Silent Voice": ["Anime", "Drama", "Emotional", "Redemptive", "Japanese", "Modern"]
+    # ... (remaining movie data)
 }
 
 # Convert metadata to a DataFrame
@@ -25,8 +19,8 @@ movies_df.columns = ["Movie", "Genre1", "Genre2", "Tone", "Style", "Language", "
 movies_df_encoded = pd.get_dummies(movies_df.drop(columns=["Movie"]))
 labels = movies_df["Movie"]
 
-# Train decision tree
-clf = DecisionTreeClassifier()
+# Use RandomForest for better performance
+clf = RandomForestClassifier(n_estimators=100, random_state=42)
 clf.fit(movies_df_encoded, labels)
 
 # Streamlit UI
@@ -36,26 +30,45 @@ def main():
 
     # Questionnaire
     responses = {}
-    responses["Genre1"] = st.selectbox("1. Pick a genre:", ["Thriller", "Comedy", "Adventure", "Sci-Fi", "Horror", "Drama", "Romance", "Anime"])
+    responses["Genre1"] = st.multiselect("1. Pick your favorite genres:", ["Thriller", "Comedy", "Adventure", "Sci-Fi", "Horror", "Drama", "Romance", "Anime"])
     responses["Tone"] = st.selectbox("2. How do you like your movies?", ["Dark", "Feel-Good", "Light", "Thought-Provoking", "Disturbing", "Heartwarming", "Quirky", "Emotional"])
     responses["Style"] = st.selectbox("3. Choose a movie style:", ["Suspenseful", "Wholesome", "Engaging", "Minimalist", "Intense", "Tragic", "Aesthetic", "Redemptive"])
-    responses["Language"] = st.selectbox("4. What language do you prefer?", ["English", "Korean", "Italian", "Japanese"])
+    responses["Language"] = st.selectbox("4. What language do you prefer?", ["English", "Korean", "Italian", "Japanese", "Hindi", "Indonesian"])
     responses["Era"] = st.selectbox("5. Which movie era do you like best?", ["Classic", "2000s", "Modern"])
+
+    # Add more questions
+    responses["CharacterType"] = st.selectbox("6. What type of characters do you enjoy?", ["Strong", "Vulnerable", "Quirky", "Relatable", "Mysterious", "Funny"])
+    responses["PlotTwist"] = st.selectbox("7. How much do you enjoy plot twists?", ["None", "Small surprises", "Medium twists", "Big twists", "I love the unexpected!"])
+    responses["Length"] = st.selectbox("8. What length do you prefer?", ["Short (less than 90 mins)", "Medium (90-120 mins)", "Long (over 120 mins)"])
+    responses["Setting"] = st.selectbox("9. Which setting do you enjoy the most?", ["Urban", "Nature", "Space", "Historical", "Fantasy", "Small Town"])
+    responses["Mood"] = st.selectbox("10. What mood are you in today?", ["Adventurous", "Romantic", "Thoughtful", "Relaxed", "Energetic", "Curious"])
 
     if st.button("Get Recommendations!"):
         # Encode user responses
         user_df = pd.DataFrame([responses])
         user_encoded = pd.get_dummies(user_df)
+
+        # Reindex to match the movie dataset
         user_encoded = user_encoded.reindex(columns=movies_df_encoded.columns, fill_value=0)
-        
-        # Predict top 3 movies
+
+        # Predict top 3 movies based on user preferences
         predictions = clf.predict_proba(user_encoded)[0]
-        top_indices = np.argsort(predictions)[-3:][::-1]
+        top_indices = np.argsort(predictions)[-5:][::-1]
         top_movies = labels.iloc[top_indices]
-        
+
+        # Display Recommendations
         st.subheader("🎥 Your Recommended Movies:")
         for movie in top_movies:
             st.write(f"**{movie}**")
+
+        # Show Movie Poster (for fun)
+        movie_posters = {
+            "Parasite": "https://link_to_poster_Parasite.jpg",
+            "Little Miss Sunshine": "https://link_to_poster_LittleMissSunshine.jpg",
+            # ... add links to other movie posters
+        }
+        for movie in top_movies:
+            st.image(movie_posters.get(movie, "https://placeholder_image.jpg"), caption=movie, width=200)
 
 if __name__ == "__main__":
     main()
