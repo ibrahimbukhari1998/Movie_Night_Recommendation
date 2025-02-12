@@ -68,7 +68,7 @@ def main():
     responses["Mood"] = st.selectbox("10. What mood are you in today?", 
                                      ["Adventurous", "Romantic", "Thoughtful", "Relaxed", "Energetic", "Curious"])
 
-    if st.button("Get Recommendations!"):
+   if st.button("Get Recommendations!"):
         # Encode user responses
         user_df = pd.DataFrame([responses])
         
@@ -79,11 +79,11 @@ def main():
             user_df[f"Language_{lang}"] = 1
         
         # Ensure all columns from training data are present
-        # user_encoded = pd.get_dummies(user_df)
-        # user_encoded = user_encoded.reindex(columns=movies_df_encoded.columns, fill_value=0)
+        user_encoded = pd.get_dummies(user_df)
+        user_encoded = user_encoded.reindex(columns=movies_df_encoded.columns, fill_value=0)
         
         # Predict top 3 movies
-        predictions = clf.predict_proba(user_df)[0]
+        predictions = clf.predict_proba(user_encoded)[0]
         top_indices = np.argsort(predictions)[-5:][::-1]
         top_movies = labels.iloc[top_indices]
         
