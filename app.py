@@ -68,28 +68,28 @@ def main():
     responses["Mood"] = st.selectbox("10. What mood are you in today?", 
                                      ["Adventurous", "Romantic", "Thoughtful", "Relaxed", "Energetic", "Curious"])
 
-   if st.button("Get Recommendations!"):
-        # Encode user responses
-        user_df = pd.DataFrame([responses])
-        
-        # Handling multiple selections for Genre1 and Language
-        for genre in responses["Genre1"]:
-            user_df[f"Genre1_{genre}"] = 1
-        for lang in responses["Language"]:
-            user_df[f"Language_{lang}"] = 1
-        
-        # Ensure all columns from training data are present
-        user_encoded = pd.get_dummies(user_df)
-        user_encoded = user_encoded.reindex(columns=movies_df_encoded.columns, fill_value=0)
-        
-        # Predict top 3 movies
-        predictions = clf.predict_proba(user_encoded)[0]
-        top_indices = np.argsort(predictions)[-5:][::-1]
-        top_movies = labels.iloc[top_indices]
-        
-        st.subheader("🎥 Your Recommended Movies:")
-        for movie in top_movies:
-            st.write(f"**{movie}**")
+    if st.button("Get Recommendations!"):
+            # Encode user responses
+            user_df = pd.DataFrame([responses])
+            
+            # Handling multiple selections for Genre1 and Language
+            for genre in responses["Genre1"]:
+                user_df[f"Genre1_{genre}"] = 1
+            for lang in responses["Language"]:
+                user_df[f"Language_{lang}"] = 1
+            
+            # Ensure all columns from training data are present
+            user_encoded = pd.get_dummies(user_df)
+            user_encoded = user_encoded.reindex(columns=movies_df_encoded.columns, fill_value=0)
+            
+            # Predict top 3 movies
+            predictions = clf.predict_proba(user_encoded)[0]
+            top_indices = np.argsort(predictions)[-5:][::-1]
+            top_movies = labels.iloc[top_indices]
+            
+            st.subheader("🎥 Your Recommended Movies:")
+            for movie in top_movies:
+                st.write(f"**{movie}**")
 
 if __name__ == "__main__":
     main()
